@@ -1,4 +1,4 @@
-.container {
+﻿.container {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -64,8 +64,8 @@
     justify-content: center;
     width: 80px;
     height: 80px;
-    margin: 10px;
-    background-color: rgba(255,255,255,0.2);
+    margin: 10px;   
+    background-color: rgba(95, 94, 94, 1);
     border-radius: 10px;
     color: rgb(255,255,255);
     cursor: pointer;
@@ -81,9 +81,9 @@
     margin-bottom: 5px;
 }
 
-.icon:hover{
+.icon:hover {
     transform: scale(1.10);
-    background-color: rgba(255,255,255,0.3);
+    background-color: rgba(95, 94, 94, 0.5);
 }
 
 .icon p{
@@ -95,6 +95,8 @@ body, html {
     height: 100%;
     margin: 0;
     background: linear-gradient(purple, blue);
+    background-size: cover;
+    background-position:center;
 }
 
 /* APLICATII */
@@ -123,8 +125,24 @@ body, html {
     border-top-right-radius: 8px;
 }
 
+.resize-handle {
+    width: 12px;
+    height: 12px;
+    background: #888;
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    cursor: se-resize;
+    border-radius: 2px;
+    z-index: 20;
+}
+
+
 .window-body {
-    padding: 10px;
+    height: calc(100% - 42px);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 14px;
 }
 
 .close-btn {
@@ -141,17 +159,28 @@ body, html {
     background: #ff1e1e;
 }
 
-.notes-content textarea {
+.notes-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    height: 200px;
-    background: rgba(255,255,255,0.1);
+    height: 100%;
+}
+
+.notes-content textarea {
+    flex: 1;
+    width: 100%;
+    background: rgba(0,0,0,0.2);
     border: none;
     color: white;
     resize: none;
     outline: none;
+    padding: 10px;
+    font-size: 14px;
     border-radius: 6px;
-    padding: 5px;
+    box-sizing: border-box;
 }
+
 
 .photo-content img {
     width: 100%;
@@ -162,4 +191,24 @@ body, html {
 
 .task-btn {
     margin-left: 8px;
+}
+
+.wallpaper-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    padding: 10px;
+}
+
+.wall-thumb {
+    width: 100%;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.wall-thumb:hover {
+    transform: scale(1.05);
 }

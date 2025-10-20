@@ -10,14 +10,16 @@
 
 <body>
 
-    <div class="container"> 
+    <div class="container">
         <div class="screen">
             <div class="icon" data-app="photo">
                 <p>Photo</p>
             </div>
             <div class="icon" data-app="notes">
-
                 <p>Notes</p>
+            </div>
+            <div class="icon" data-app="wallpapers">
+                <p>Wallpapers</p>
             </div>
         </div>
         <div class="bar">
@@ -25,113 +27,8 @@
             <div class="clock"></div>
         </div>
     </div>
-    
-    <script>
-        function updateClock(){
-            const now = new Date();
-            const ore = String(now.getHours()).padStart(2, '0');
-            const minute = String(now.getMinutes()).padStart(2, '0');
-            const secunde = String(now.getSeconds()).padStart(2, '0');
-            const time = `${ore}:${minute}:${secunde}`;
 
-            const zile = ["Sun","Mon","Tue","Wen","Thu","Fri","Sat"];
-            const luni = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-            const zi_curenta = zile[now.getDay()];
-            const zi_luna = String(now.getDate()).padStart(2, '0');
-            const luna = luni[now.getMonth()];
-            const an = now.getFullYear();
-            const data = `${zi_luna}/${luna}/${an}`;
-            document.querySelector(".clock").textContent = `${time} | ${data}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-        
-     document.querySelectorAll(".icon").forEach(icon => {
-            icon.addEventListener("click", () => {
-                const app = icon.dataset.app;
-                openWindow(app);
-            });
-        });
-
-        function openWindow(app) {
-            // prevent duplicate window
-            if (document.querySelector(`.window[data-app="${app}"]`)) return;
-
-            const win = document.createElement("div");
-            win.classList.add("window");
-            win.setAttribute("data-app", app);
-
-            let content = "";
-            if (app === "photo") {
-                content = `
-                    <div class="photo-content">
-                        <img src="lebron-sunshine.png" alt="Lebron background">
-                    </div>
-                `;
-            } else if (app === "notes") {
-                content = `
-                    <div class="notes-content">
-                        <textarea placeholder="Write your notes here..."></textarea>
-                    </div>
-                `;
-            }
-
-            win.innerHTML = `
-                <div class="window-header">
-                    <span>${app.toUpperCase()}</span>
-                    <button class="close-btn">✖</button>
-                </div>
-                <div class="window-body">${content}</div>
-            `;
-
-            document.body.appendChild(win);
-
-            // Add to taskbar
-            const taskButton = document.createElement("button");
-            taskButton.classList.add("button", "task-btn");
-            taskButton.textContent = app;
-            document.querySelector(".bar").insertBefore(taskButton, document.querySelector(".clock"));
-
-            // Close button removes both
-            win.querySelector(".close-btn").addEventListener("click", () => {
-                win.remove();
-                taskButton.remove();
-            });
-
-            // Taskbar button refocuses window
-            taskButton.addEventListener("click", () => {
-                win.style.zIndex = Date.now();
-            });
-
-            makeDraggable(win);
-        }
-
-        function makeDraggable(win) {
-            const header = win.querySelector(".window-header");
-            let offsetX = 0, offsetY = 0, mouseX = 0, mouseY = 0;
-            header.onmousedown = e => {
-                e.preventDefault();
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                document.onmouseup = stopDrag;
-                document.onmousemove = drag;
-            };
-            function drag(e) {
-                e.preventDefault();
-                offsetX = mouseX - e.clientX;
-                offsetY = mouseY - e.clientY;
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                win.style.top = (win.offsetTop - offsetY) + "px";
-                win.style.left = (win.offsetLeft - offsetX) + "px";
-                win.style.zIndex = Date.now();
-            }
-            function stopDrag() {
-                document.onmouseup = null;
-                document.onmousemove = null;
-            }
-        }
-    </script>
+    <script src="scripts.js"></script>
 
 </body>
 </html>
