@@ -68,9 +68,9 @@ function openWindow(app) {
             <div class="wallpaper-content">
                 <h3>Select a wallpaper:</h3>
                 <div class="wallpaper-grid">
-                    <img src="wallpapers/sky.jpg" data-img="wallpapers/sky.jpg" class="wall-thumb">
-                    <img src="wallpapers/forest.jpg" data-img="wallpapers/forest.jpg" class="wall-thumb">
-                    <img src="wallpapers/beach.jpg" data-img="wallpapers/beach.jpg" class="wall-thumb">
+                    <img src="sky.jpg" data-img="sky.jpg" class="wall-thumb">
+                    <img src="forest.jpg" data-img="forest.jpg" class="wall-thumb">
+                    <img src="beach.jpg" data-img="beach.jpg" class="wall-thumb">
                 </div>
                 <hr>
                 <p>Or upload your own:</p>
