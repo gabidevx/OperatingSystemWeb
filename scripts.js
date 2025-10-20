@@ -31,12 +31,21 @@ updateClock();
 document.querySelectorAll(".icon").forEach(icon => {
     icon.addEventListener("click", () => {
         const app = icon.dataset.app;
-        openWindow(app);
+        const defaultFile = app === 'photo' ? 'lebron-sunshine.png' : undefined;
+        openWindow(app, defaultFile);
     });
 });
 
-function openWindow(app) {
-    const existingWin = document.querySelector(`.window[data-app="${app}"]`);
+function openWindow(app, fileName = 'lebron-sunshine.png') {
+    
+    let taskId = app;
+    
+    //creez un id unic pt fiecare poza in parte
+    if (app === 'photo') {
+        taskId = `photo-${fileName}`;
+    }
+
+    const existingWin = document.querySelector(`.window[data-app="${taskId}"]`);
     if (existingWin) {
         existingWin.style.display = "block";
         bringToFront(existingWin);
@@ -45,15 +54,16 @@ function openWindow(app) {
 
     const win = document.createElement("div");
     win.classList.add("window");
-    win.setAttribute("data-app", app);
+    win.setAttribute("data-app", taskId);
     win.style.top = "100px";
     win.style.left = "100px";
 
     let content = "";
     if (app === "photo") {
+        win.setAttribute("data-file", fileName);
         content = `
             <div class="photo-content">
-                <img src="lebron-sunshine.png" alt="Lebron background">
+                <img src="${fileName}" alt="${fileName.split('.')[0]} background"> 
             </div>
         `;
     } else if (app === "notes") {
@@ -77,11 +87,30 @@ function openWindow(app) {
                 <input type="file" id="customWallpaper">
             </div>
         `;
+    } else if(app == "terminal"){
+        win.style.width = "650px";
+        win.style.height = "400px";
+        content = `
+            <div class="terminal-content">
+                <div class="terminal-output">
+                    Scrieti 'help' pentru comenzi
+                </div>
+                <div class="terminal-input-line">
+                    <input type="text" class="terminal-input" autofocus>
+                </div>
+            </div>
+            `;
+    }
+    
+    let windowTitle = app.toUpperCase();
+    if (app === "photo") {
+        //afisez numele la photo
+        windowTitle = `${app.toUpperCase()}: ${fileName}`; 
     }
 
     win.innerHTML = `
         <div class="window-header">
-            <span>${app.toUpperCase()}</span>
+            <span>${windowTitle}</span>
             <div class="window-controls">
                 <button class="minimize-btn">━</button>
                 <button class="maximize-btn">⬜</button>
@@ -93,13 +122,18 @@ function openWindow(app) {
     `;
     document.body.appendChild(win);
 
+    let buttonText = app;
+    if (app === 'photo') {
+        buttonText = fileName.split('.')[0]; 
+    }
+
     // Taskbar button
-    let taskButton = document.querySelector(`.task-btn[data-app="${app}"]`);
+    let taskButton = document.querySelector(`.task-btn[data-app="${taskId}"]`);
     if (!taskButton) {
         taskButton = document.createElement("button");
         taskButton.classList.add("button", "task-btn");
-        taskButton.setAttribute("data-app", app);
-        taskButton.textContent = app;
+        taskButton.setAttribute("data-app", taskId);
+        taskButton.textContent = buttonText;
         document.querySelector(".bar").insertBefore(taskButton, document.querySelector(".clock"));
     }
 
@@ -184,6 +218,76 @@ function openWindow(app) {
         adjustTextareaHeight();
         const observer = new ResizeObserver(adjustTextareaHeight);
         observer.observe(win);
+    }
+
+    //Terminal
+    if (app === "terminal") {
+        const input = win.querySelector(".terminal-input");
+        const output = win.querySelector(".terminal-output");
+        
+        const PROMPT = 'user@FakeOS:~$ ';
+
+        const IMAGE_FILES = {
+            'sybau': 'sybau.png',
+            'lebron': 'lebron-sunshine.png',
+            'madagascar': 'madagascar.png'
+        }
+        
+        const COMMANDS = {
+            'help': 'Comenzi disponibile: help, clear',
+            'clear': '',
+        };
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                const fullCommand = input.value.trim().toLowerCase();
+                let outputLine = PROMPT + input.value + '\n'; 
+                let commandFound = true; 
+
+                // Split the input into individual tokens (commands)
+                const tokens = fullCommand.split(' ').filter(t => t.length > 0);
+
+                if (tokens.length === 0) {
+                    commandFound = false;
+                } else if (tokens[0] === 'clear') {
+                    output.textContent = '';
+                } else if (tokens[0] === 'help') {
+                    outputLine += COMMANDS['help'];
+                } else {
+                    let filesOpenedCount = 0;
+                    
+                    tokens.forEach(token => {
+                        if (IMAGE_FILES.hasOwnProperty(token)) {
+                            const fileName = IMAGE_FILES[token];
+                            //deschid o poza noua pentru orice token valid
+                            openWindow('photo', fileName); 
+                            outputLine += `  -> Opening ${fileName}...\n`;
+                            filesOpenedCount++;
+                        } else {
+                            if(filesOpenedCount === 0 && tokens.length === 1) {
+                                outputLine += `Command not found: ${fullCommand}`;
+                                commandFound = false;
+                            } else if (tokens.length > 1) {
+                                outputLine += `  -> Command not found: ${token}\n`;
+                            }
+                        }
+                    });
+
+                    if (filesOpenedCount > 0) {
+                        outputLine = outputLine.trimEnd();
+                    } else if (tokens.length > 1 && filesOpenedCount === 0) {
+                        commandFound = false;
+                    }
+                }
+
+                if (tokens[0] !== 'clear') {
+                    output.textContent += outputLine + '\n';
+                }
+                
+                input.value = '';
+                output.scrollTop = output.scrollHeight;
+            }
+        });
     }
 
     makeDraggable(win);

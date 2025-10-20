@@ -212,3 +212,37 @@ body, html {
 .wall-thumb:hover {
     transform: scale(1.05);
 }
+
+/*TERMINAL*/
+
+.terminal-continut{
+    background-color: rgb(0, 0, 0);
+    color: rgb(51, 255, 0);
+    padding: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.terminal-rezultat{
+    flex: 1;/*iau tot spatiul liber*/
+    overflow-y: auto;/*in caz ca am continut ce trece de dimensiune pot da scroll down*/
+    white-space: pre-wrap;
+    margin-bottom: 5px;
+}
+
+.terminal-input-line{
+    display: flex;
+    align-items: center;
+}
+
+.terminal-input{
+    flex: 1;
+    background: none;
+    border:none;
+    color: rgb(255, 251, 0);
+    outline: none;
+    caret-color: rgb(255, 251, 0);/*culoare blink cursor*/
+    font-size: 14px;
+    padding: 0;
+}
