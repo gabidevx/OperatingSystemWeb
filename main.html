@@ -12,11 +12,16 @@
 
     <div class="container"> 
         <div class="screen">
-            <p>screen</p>
+            <div class="icon" data-app="paint">
+                <img src="lebron-sunshine.png" alt="Paint icon">
+                <p>Paint</p>
+            </div>
+            <div class="icon" data-app="notes">
+
+                <p>Notes</p>
+            </div>
         </div>
         <div class="bar">
-            <button class="button">Paint</button>
-            <button class="button">Notes</button>
             <button class="button">Home</button>
             <div class="clock"></div>
         </div>
@@ -28,10 +33,20 @@
             const ore = String(now.getHours()).padStart(2, '0');
             const minute = String(now.getMinutes()).padStart(2, '0');
             const secunde = String(now.getSeconds()).padStart(2, '0');
-            document.querySelector(".clock").textContent = `${ore}:${minute}:${secunde}`;
+            const time = `${ore}:${minute}:${secunde}`;
+
+            const zile = ["Sun","Mon","Tue","Wen","Thu","Fri","Sat"];
+            const luni = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+            const zi_curenta = zile[now.getDay()];
+            const zi_luna = String(now.getDate()).padStart(2, '0');
+            const luna = luni[now.getMonth()];
+            const an = now.getFullYear();
+            const data = `${zi_luna}/${luna}/${an}`;
+            document.querySelector(".clock").textContent = `${time} | ${data}`;
         }
         setInterval(updateClock, 1000);
         updateClock();
+        
     </script>
 
 </body>
