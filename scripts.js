@@ -230,7 +230,8 @@ function openWindow(app, fileName = 'lebron-sunshine.png') {
         const IMAGE_FILES = {
             'sybau': 'sybau.png',
             'lebron': 'lebron-sunshine.png',
-            'madagascar': 'madagascar.png'
+            'madagascar': 'madagascar.png',
+            'wilson': 'wilson.gif'
         }
         
         const COMMANDS = {
@@ -253,7 +254,8 @@ function openWindow(app, fileName = 'lebron-sunshine.png') {
                     output.textContent = '';
                 } else if (tokens[0] === 'help') {
                     outputLine += COMMANDS['help'];
-                } else {
+                }
+                else {
                     let filesOpenedCount = 0;
                     
                     tokens.forEach(token => {
