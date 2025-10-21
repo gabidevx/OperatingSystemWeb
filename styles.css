@@ -11,7 +11,7 @@
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgb(16, 16, 16);
+    background-color: var(--taskbar-bg, rgb(16, 16, 16)); /* suportă culoare din input */
     color: white;
     display: flex;
     flex-direction: row;
@@ -20,6 +20,23 @@
     padding: 8px 15px;
     border-radius: 10px;
     box-shadow: 0 8px 10px rgba(0,0,0,0.35);
+}
+
+.color-picker, .color-selector {
+    margin-left: 10px;
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.color-picker input[type="color"],
+.color-selector input[type="color"] {
+    width: 28px;
+    height: 22px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
 }
 
 .button {
@@ -57,7 +74,7 @@
     border-radius: 6px;
 }
 
-.icon{
+.icon {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -70,10 +87,10 @@
     color: rgb(255,255,255);
     cursor: pointer;
     transition: transform 0.2s, background 0.2s;
-    overflow:hidden;
+    overflow: hidden;
 }
 
-.icon img{
+.icon img {
     width: 60px;
     height: 60px;
     object-fit: cover;
@@ -86,7 +103,7 @@
     background-color: rgba(95, 94, 94, 0.5);
 }
 
-.icon p{
+.icon p {
     margin: 5px;
     font-size: 14px;
 }
@@ -96,7 +113,7 @@ body, html {
     margin: 0;
     background: linear-gradient(purple, blue);
     background-size: cover;
-    background-position:center;
+    background-position: center;
 }
 
 /* APLICATII */
@@ -112,6 +129,7 @@ body, html {
     border-radius: 8px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.4);
     z-index: 10;
+    transform-origin: center;
 }
 
 .window-header {
@@ -136,7 +154,6 @@ body, html {
     border-radius: 2px;
     z-index: 20;
 }
-
 
 .window-body {
     height: calc(100% - 42px);
@@ -181,7 +198,6 @@ body, html {
     box-sizing: border-box;
 }
 
-
 .photo-content img {
     width: 100%;
     height: 250px;
@@ -213,9 +229,9 @@ body, html {
     transform: scale(1.05);
 }
 
-/*TERMINAL*/
+/* TERMINAL */
 
-.terminal-continut{
+.terminal-continut {
     background-color: rgb(0, 0, 0);
     color: rgb(51, 255, 0);
     padding: 10px;
@@ -224,25 +240,51 @@ body, html {
     flex-direction: column;
 }
 
-.terminal-rezultat{
-    flex: 1;/*iau tot spatiul liber*/
-    overflow-y: auto;/*in caz ca am continut ce trece de dimensiune pot da scroll down*/
+.terminal-rezultat {
+    flex: 1;
+    overflow-y: auto;
     white-space: pre-wrap;
     margin-bottom: 5px;
 }
 
-.terminal-input-line{
+.terminal-input-line {
     display: flex;
     align-items: center;
 }
 
-.terminal-input{
+.terminal-input {
     flex: 1;
     background: none;
-    border:none;
+    border: none;
     color: rgb(255, 251, 0);
     outline: none;
-    caret-color: rgb(255, 251, 0);/*culoare blink cursor*/
+    caret-color: rgb(255, 251, 0);
     font-size: 14px;
     padding: 0;
+}
+
+/* ANIMATII */
+
+@keyframes window_in {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+@keyframes window_out {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(0.95); opacity: 0; }
+}
+
+.window-opening {
+    animation: window_in 170ms ease-out both;
+    will-change: transform, opacity;
+}
+.window-closing {
+    animation: window_out 150ms ease-in both;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .window-opening, .window-closing {
+        animation: none !important;
+    }
 }
