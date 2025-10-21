@@ -22,13 +22,15 @@
     box-shadow: 0 8px 10px rgba(0,0,0,0.35);
 }
 
-.color-picker, .color-selector {
+.color-picker,
+.color-selector {
     margin-left: 10px;
     margin-right: 10px;
     display: inline-flex;
     align-items: center;
     gap: 6px;
 }
+
 .color-picker input[type="color"],
 .color-selector input[type="color"] {
     width: 28px;
@@ -40,7 +42,7 @@
 }
 
 .button {
-    background-color: #0078D7; 
+    background-color: #0078D7;
     color: white;
     font-size: 14px;
     padding: 8px 20px;
@@ -81,7 +83,7 @@
     justify-content: center;
     width: 80px;
     height: 80px;
-    margin: 10px;   
+    margin: 10px;
     background-color: rgba(95, 94, 94, 1);
     border-radius: 10px;
     color: rgb(255,255,255);
@@ -172,6 +174,7 @@ body, html {
     cursor: pointer;
     font-weight: bold;
 }
+
 .close-btn:hover {
     background: #ff1e1e;
 }
@@ -266,18 +269,32 @@ body, html {
 /* ANIMATII */
 
 @keyframes window_in {
-    from { transform: scale(0.95); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
+
 @keyframes window_out {
-    from { transform: scale(1); opacity: 1; }
-    to { transform: scale(0.95); opacity: 0; }
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0.95);
+        opacity: 0;
+    }
 }
 
 .window-opening {
     animation: window_in 170ms ease-out both;
     will-change: transform, opacity;
 }
+
 .window-closing {
     animation: window_out 150ms ease-in both;
     pointer-events: none;

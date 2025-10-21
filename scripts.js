@@ -250,8 +250,9 @@ function openWindow(app, fileName = 'lebron-sunshine.png') {
         }
         
         const COMMANDS = {
-            'help': 'Comenzi disponibile: help, clear',
+            'help': 'Comenzi disponibile: help, clear, sudo hack nasa',
             'clear': '',
+            'sudo hack nasa' : "Hacking NASA...\n Obtaining data...\n Downloading files...\n Sending packages...\n Retrieving data... \n Complete! NASA has been hacked successfully."
         };
 
         input.addEventListener("keydown", (e) => {
@@ -269,6 +270,9 @@ function openWindow(app, fileName = 'lebron-sunshine.png') {
                     output.textContent = '';
                 } else if (tokens[0] === 'help') {
                     outputLine += COMMANDS['help'];
+                }
+                else if (fullCommand === 'sudo hack nasa') {
+                    outputLine += COMMANDS['sudo hack nasa'];
                 }
                 else {
                     let filesOpenedCount = 0;
