@@ -237,79 +237,77 @@ function openWindow(app, fileName = 'lebron-sunshine.png') {
 
     //Terminal
     if (app === "terminal") {
-        const input = win.querySelector(".terminal-input");
-        const output = win.querySelector(".terminal-output");
-        
-        const PROMPT = 'user@FakeOS:~$ ';
+    const input = win.querySelector(".terminal-input");
+    const output = win.querySelector(".terminal-output");
 
-        const IMAGE_FILES = {
-            'sybau': 'sybau.png',
-            'lebron': 'lebron-sunshine.png',
-            'madagascar': 'madagascar.png',
-            'wilson': 'wilson.gif'
-        }
-        
-        const COMMANDS = {
-            'help': 'Comenzi disponibile: help, clear, sudo hack nasa',
-            'clear': '',
-            'sudo hack nasa' : "Hacking NASA...\n Obtaining data...\n Downloading files...\n Sending packages...\n Retrieving data... \n Complete! NASA has been hacked successfully."
-        };
+    const PROMPT = 'user@FakeOS:~$ ';
 
-        input.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                const fullCommand = input.value.trim().toLowerCase();
-                let outputLine = PROMPT + input.value + '\n'; 
-                let commandFound = true; 
+    const IMAGE_FILES = {
+        'sybau': 'sybau.png',
+        'lebron': 'lebron-sunshine.png',
+        'madagascar': 'madagascar.png',
+        'wilson': 'wilson.gif'
+    };
 
-                // Split the input into individual tokens (commands)
-                const tokens = fullCommand.split(' ').filter(t => t.length > 0);
+    const COMMANDS = {
+        'help': 'Comenzi disponibile: help, clear, sudo hack nasa',
+        'clear': ''
+    };
 
-                if (tokens.length === 0) {
-                    commandFound = false;
-                } else if (tokens[0] === 'clear') {
-                    output.textContent = '';
-                } else if (tokens[0] === 'help') {
-                    outputLine += COMMANDS['help'];
+    input.addEventListener("keydown", async (e) => {
+        if (e.key === "Enter") {
+            const fullCommand = input.value.trim().toLowerCase();
+            let outputLine = PROMPT + input.value + '\n';
+            const tokens = fullCommand.split(' ').filter(t => t.length > 0);
+
+            if (tokens.length === 0) return;
+
+            if (tokens[0] === 'clear') {
+                output.textContent = '';
+            } else if (tokens[0] === 'help') {
+                output.textContent += outputLine + COMMANDS['help'] + '\n';
+            } else if (fullCommand === 'sudo hack nasa') {
+                output.textContent += outputLine;
+
+                const steps = [
+                    "Hacking NASA...",
+                    "Obtaining data...",
+                    "Downloading files...",
+                    "Sending packages...",
+                    "Retrieving data...",
+                    "✅ Complete! NASA has been hacked successfully."
+                ];
+
+                for (let i = 0; i < steps.length; i++) {
+                    await new Promise(resolve => setTimeout(resolve, 800)); // delay de 800ms
+                    output.textContent += steps[i] + '\n';
+                    output.scrollTop = output.scrollHeight;
                 }
-                else if (fullCommand === 'sudo hack nasa') {
-                    outputLine += COMMANDS['sudo hack nasa'];
-                }
-                else {
-                    let filesOpenedCount = 0;
-                    
-                    tokens.forEach(token => {
-                        if (IMAGE_FILES.hasOwnProperty(token)) {
-                            const fileName = IMAGE_FILES[token];
-                            //deschid o poza noua pentru orice token valid
-                            openWindow('photo', fileName); 
-                            outputLine += `  -> Opening ${fileName}...\n`;
-                            filesOpenedCount++;
+            } else {
+                let filesOpenedCount = 0;
+                for (const token of tokens) {
+                    if (IMAGE_FILES.hasOwnProperty(token)) {
+                        const fileName = IMAGE_FILES[token];
+                        openWindow('photo', fileName);
+                        outputLine += `  -> Opening ${fileName}...\n`;
+                        filesOpenedCount++;
+                    } else {
+                        if (filesOpenedCount === 0 && tokens.length === 1) {
+                            outputLine += `Command not found: ${fullCommand}`;
                         } else {
-                            if(filesOpenedCount === 0 && tokens.length === 1) {
-                                outputLine += `Command not found: ${fullCommand}`;
-                                commandFound = false;
-                            } else if (tokens.length > 1) {
-                                outputLine += `  -> Command not found: ${token}\n`;
-                            }
+                            outputLine += `  -> Command not found: ${token}\n`;
                         }
-                    });
-
-                    if (filesOpenedCount > 0) {
-                        outputLine = outputLine.trimEnd();
-                    } else if (tokens.length > 1 && filesOpenedCount === 0) {
-                        commandFound = false;
                     }
                 }
-
-                if (tokens[0] !== 'clear') {
-                    output.textContent += outputLine + '\n';
-                }
-                
-                input.value = '';
-                output.scrollTop = output.scrollHeight;
+                output.textContent += outputLine + '\n';
             }
-        });
-    }
+
+            input.value = '';
+            output.scrollTop = output.scrollHeight;
+        }
+    });
+}
+
 
     makeDraggable(win);
     makeResizable(win, app);
@@ -398,3 +396,4 @@ function setWallpaper(imageUrl) {
     document.body.style.backgroundPosition = "center";
     localStorage.setItem("wallpaper", imageUrl);
 }
+
